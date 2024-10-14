@@ -9,18 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@t3-oss/env-nextjs": "^0.11.1",
+    "@tanstack/react-query": "^5.59.13",
+    "@wix/ecom": "^1.0.775",
+    "@wix/media": "^1.0.125",
+    "@wix/members": "^1.0.106",
+    "@wix/redirects": "^1.0.58",
+    "@wix/reviews": "^1.0.39",
+    "@wix/sdk": "^1.14.1",
+    "@wix/stores": "^1.0.256",
+    "date-fns": "^4.1.0",
+    "install-peerdeps": "^3.0.3",
+    "js-cookie": "^3.0.5",
+    "ky": "^1.7.2",
+    "next": "15.0.0-rc.0",
+    "next-themes": "^0.3.0",
     "react": "19.0.0-rc-f994737d14-20240522",
     "react-dom": "19.0.0-rc-f994737d14-20240522",
-    "next": "15.0.0-rc.0"
+    "react-medium-image-zoom": "^5.2.10"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.0-rc.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.0-rc.0"
+    "typescript": "^5"
   }
 }
