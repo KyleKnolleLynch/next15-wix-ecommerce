@@ -7,7 +7,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-noto-sans-display)'],
-        mono: ['var(--font-noto-sans-display)'],
+        // mono: ['var(--font-noto-sans-display)'],
+        mono: 'monospace',
       },
       borderRadius: {
         lg: 'var(--radius)',

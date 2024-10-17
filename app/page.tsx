@@ -6,7 +6,8 @@ import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { delay } from '@/lib/utils'
 import { Suspense } from 'react'
 import { getWixClient } from '@/lib/wix-client.base'
-import Product from '@/components/Product'
+import Product from '@/components/product'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function Home() {
   return (
@@ -35,7 +36,7 @@ export default function Home() {
           <div className='absolute inset-0 bg-gradient-to-r from-secondary via-transparent to-transparent' />
         </div>
       </section>
-      <Suspense fallback={'Loading...'}>
+      <Suspense fallback={<LoadingSkeleton />}>
         <FeaturedProducts />
       </Suspense>
     </main>
@@ -63,11 +64,22 @@ async function FeaturedProducts() {
   return (
     <section className='space-y-5'>
       <h2 className='text-2xl font-bold'>Featured Products</h2>
-      <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+      <div className='grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {featuredProducts.items.map(product => (
           <Product key={product._id} product={product} />
         ))}
       </div>
+      <pre>{JSON.stringify(featuredProducts, null, 2)}</pre>
     </section>
+  )
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className='grid gap-4 pt-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Skeleton key={i} className='h-[30rem] w-full rounded-none' />
+      ))}
+    </div>
   )
 }
