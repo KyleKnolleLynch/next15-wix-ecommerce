@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
+import Navbar from './navbar'
+import Footer from './footer'
 
 const notoSansDisplay = localFont({
   src: './fonts/NotoSansDisplayVF.woff2',
@@ -24,7 +26,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${notoSansDisplay.variable} font-sans antialiased`}>
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   )
