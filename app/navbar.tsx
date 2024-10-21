@@ -1,31 +1,13 @@
-import { getWixClient } from '@/lib/wix-client.base'
 import Link from 'next/link'
-import Logo from '@/assets/logo.png'
 import Image from 'next/image'
-
-async function getCart() {
-  const wixClient = getWixClient()
-
-  try {
-    return await wixClient.currentCart.getCurrentCart()
-  } catch (error) {
-    if (
-      (error as any).details.applicationError.code === 'OWNED_CART_NOT_FOUND'
-    ) {
-      return null
-    } else {
-      throw error
-    }
-  }
-}
+import Logo from '@/assets/logo.png'
+import { getCart } from '@/wix-api/cart'
 
 export default async function Navbar() {
   const cart = await getCart()
 
-  const totalCartQuantity = cart?.lineItems.reduce(
-    (acc, item) => acc + (item.quantity || 0),
-    0,
-  ) || 0
+  const totalCartQuantity =
+    cart?.lineItems.reduce((acc, item) => acc + (item.quantity || 0), 0) || 0
 
   return (
     <header className='bg-background shadow-sm'>
@@ -44,5 +26,3 @@ export default async function Navbar() {
     </header>
   )
 }
-
-// 2:39

@@ -8,6 +8,8 @@ import { Suspense } from 'react'
 import { getWixClient } from '@/lib/wix-client.base'
 import Product from '@/components/product'
 import { Skeleton } from '@/components/ui/skeleton'
+import { getCollectionBySlug } from '@/wix-api/collections'
+import { queryProducts } from '@/wix-api/products'
 
 export default function Home() {
   return (
@@ -46,18 +48,13 @@ export default function Home() {
 async function FeaturedProducts() {
   // await delay(1000)
 
-  const wixClient = getWixClient()
-
-  const { collection } =
-    await wixClient.collections.getCollectionBySlug('featured-products')
+  const collection = await getCollectionBySlug('featured-products')
 
   if (!collection?._id) return null
 
-  const featuredProducts = await wixClient.products
-    .queryProducts()
-    .hasSome('collectionIds', [collection._id])
-    .descending('lastUpdated')
-    .find()
+  const featuredProducts = await queryProducts({
+    collectionIds: collection._id,
+  })
 
   if (!featuredProducts.items.length) return null
 
