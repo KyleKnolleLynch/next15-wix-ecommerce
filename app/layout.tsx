@@ -3,6 +3,8 @@ import localFont from 'next/font/local'
 import './globals.css'
 import Navbar from './navbar'
 import Footer from './footer'
+import ReactQueryProvider from './react-query-provider'
+import { Toaster } from '@/components/ui/toaster'
 
 const notoSansDisplay = localFont({
   src: './fonts/NotoSansDisplayVF.woff2',
@@ -26,9 +28,12 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${notoSansDisplay.variable} font-sans antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
+        <ReactQueryProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </ReactQueryProvider>
+        <Toaster />
       </body>
     </html>
   )

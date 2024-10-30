@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Logo from '@/assets/logo.png'
 import { getCart } from '@/wix-api/cart'
 import { getWixServerClient } from '@/lib/wix-client.server'
+import ShoppingCartButton from './shopping-cart-button'
 
 export default async function Navbar() {
   const cart = await getCart(getWixServerClient())
@@ -22,7 +23,7 @@ export default async function Navbar() {
           />
           <span className='text-xl font-bold'>Modern Wearables</span>
         </Link>
-        {totalCartQuantity} items in your cart
+        <ShoppingCartButton initialData={cart} />
       </div>
     </header>
   )
