@@ -17,6 +17,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import AddToCartButton from '@/components/add-to-cart-button'
+import BackInStockNotificationButton from '@/components/back-in-stock-notification-button'
 
 interface ProductDetailsProps {
   product: products.Product
@@ -109,7 +110,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             className='w-full font-bold'
           />
         ) : (
-          <span>Out of stock</span>
+          <BackInStockNotificationButton
+            product={product}
+            selectedOptions={selectedOptions} 
+            className='w-full font-bold'
+          />
         )}
         {!!product.additionalInfoSections?.length && (
           <div className='space-y-1.5 text-sm text-muted-foreground'>
