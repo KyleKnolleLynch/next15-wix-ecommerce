@@ -4,6 +4,7 @@ import Logo from '@/assets/logo.png'
 import { getCart } from '@/wix-api/cart'
 import { getWixServerClient } from '@/lib/wix-client.server'
 import ShoppingCartButton from './shopping-cart-button'
+import UserButton from '@/components/user-button'
 
 export default async function Navbar() {
   const cart = await getCart(getWixServerClient())
@@ -23,7 +24,10 @@ export default async function Navbar() {
           />
           <span className='text-xl font-bold'>Modern Wearables</span>
         </Link>
-        <ShoppingCartButton initialData={cart} />
+        <div className='flex items-center justify-center gap-5'>
+          <UserButton />
+          <ShoppingCartButton initialData={cart} />
+        </div>
       </div>
     </header>
   )
