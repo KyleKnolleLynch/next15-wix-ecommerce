@@ -5,9 +5,14 @@ import { getCart } from '@/wix-api/cart'
 import { getWixServerClient } from '@/lib/wix-client.server'
 import ShoppingCartButton from './shopping-cart-button'
 import UserButton from '@/components/user-button'
+import { getLoggedInMember } from '@/wix-api/members'
 
 export default async function Navbar() {
-  const cart = await getCart(getWixServerClient())
+  const wixClient = getWixServerClient()
+  const [cart, loggedInMember] = await Promise.all([
+    getCart(wixClient),
+    getLoggedInMember(wixClient),
+  ])
 
   const totalCartQuantity =
     cart?.lineItems.reduce((acc, item) => acc + (item.quantity || 0), 0) || 0
@@ -25,7 +30,7 @@ export default async function Navbar() {
           <span className='text-xl font-bold'>Modern Wearables</span>
         </Link>
         <div className='flex items-center justify-center gap-5'>
-          <UserButton />
+          <UserButton loggedInMember={loggedInMember} />
           <ShoppingCartButton initialData={cart} />
         </div>
       </div>
