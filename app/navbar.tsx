@@ -8,6 +8,7 @@ import UserButton from '@/components/user-button'
 import { getLoggedInMember } from '@/wix-api/members'
 import { getCollections } from '@/wix-api/collections'
 import MainNavigation from './main-navigation'
+import SearchField from '@/components/search-field'
 
 export default async function Navbar() {
   const wixClient = getWixServerClient()
@@ -35,6 +36,7 @@ export default async function Navbar() {
           </Link>
           <MainNavigation collections={collections} />
         </div>
+        <SearchField className='max-w-96' />
         <div className='flex items-center justify-center gap-5'>
           <UserButton loggedInMember={loggedInMember} />
           <ShoppingCartButton initialData={cart} />
