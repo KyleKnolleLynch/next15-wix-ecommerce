@@ -12,6 +12,7 @@ interface PageProps {
   searchParams: {
     q?: string
     page?: string
+    collection?: string[]
   }
 }
 
@@ -22,33 +23,30 @@ export function generateMetadata({ searchParams: { q } }: PageProps): Metadata {
 }
 
 export default async function Page({
-  searchParams: { q, page = '1' },
+  searchParams: { q, page = '1', collection: collectionIds },
 }: PageProps) {
   const title = q ? `Results for "${q}"` : 'Products'
   return (
-    <main className='flex flex-col items-center justify-center gap-10 px-5 py-10 lg:flex-row lg:items-start'>
-      <div>Filter Sidebar</div>
-      <div className='w-full max-w-7xl space-y-5'>
-        <div className='flex justify-center lg:justify-end'>Sort Filter</div>
-        <div className='space-y-10'>
-          <h1 className='text-center text-3xl font-bold md:text-4xl'>
-            {title}
-          </h1>
-          <Suspense fallback={<LoadingSkeleton />} key={`${q}-${page}`}>
-            <ProductResults q={q} page={parseInt(page)} />
-          </Suspense>
-        </div>
-      </div>
-    </main>
+    <div className='space-y-10'>
+      <h1 className='text-center text-3xl font-bold md:text-4xl'>{title}</h1>
+      <Suspense fallback={<LoadingSkeleton />} key={`${q}-${page}`}>
+        <ProductResults
+          q={q}
+          page={parseInt(page)}
+          collectionIds={collectionIds}
+        />
+      </Suspense>
+    </div>
   )
 }
 
 interface ProductResultProps {
   q?: string
   page: number
+  collectionIds?: string[]
 }
 
-async function ProductResults({ q, page }: ProductResultProps) {
+async function ProductResults({ q, page, collectionIds }: ProductResultProps) {
   await delay(2000)
 
   const pageSize = 8
@@ -57,12 +55,13 @@ async function ProductResults({ q, page }: ProductResultProps) {
     q,
     limit: pageSize,
     skip: (page - 1) * pageSize,
+    collectionIds,
   })
 
   if (page > (products.totalPages || 1)) notFound()
 
   return (
-    <div className='space-y-10'>
+    <div className='space-y-10 group-has-[[data-pending]]:animate-pulse'>
       <p className='text-center text-xl'>
         {products.totalCount} product{products.totalCount === 1 ? '' : 's'}{' '}
         found
@@ -89,4 +88,3 @@ function LoadingSkeleton() {
     </div>
   )
 }
-
