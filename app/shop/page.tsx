@@ -1,18 +1,20 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import { queryProducts } from '@/wix-api/products'
+import { ProductsSort, queryProducts } from '@/wix-api/products'
 import { getWixServerClient } from '@/lib/wix-client.server'
 import PaginationBar from '@/components/pagination-bar'
 import Product from '@/components/product'
 import { Skeleton } from '@/components/ui/skeleton'
-import { delay } from '@/lib/utils'
 
 interface PageProps {
   searchParams: {
     q?: string
     page?: string
     collection?: string[]
+    price_min?: string
+    price_max?: string
+    sort?: string
   }
 }
 
@@ -23,7 +25,14 @@ export function generateMetadata({ searchParams: { q } }: PageProps): Metadata {
 }
 
 export default async function Page({
-  searchParams: { q, page = '1', collection: collectionIds },
+  searchParams: {
+    q,
+    page = '1',
+    collection: collectionIds,
+    price_min,
+    price_max,
+    sort,
+  },
 }: PageProps) {
   const title = q ? `Results for "${q}"` : 'Products'
   return (
@@ -34,6 +43,9 @@ export default async function Page({
           q={q}
           page={parseInt(page)}
           collectionIds={collectionIds}
+          priceMin={price_min ? parseInt(price_min) : undefined}
+          priceMax={price_max ? parseInt(price_max) : undefined}
+          sort={sort as ProductsSort}
         />
       </Suspense>
     </div>
@@ -44,11 +56,19 @@ interface ProductResultProps {
   q?: string
   page: number
   collectionIds?: string[]
+  priceMin?: number
+  priceMax?: number
+  sort?: ProductsSort
 }
 
-async function ProductResults({ q, page, collectionIds }: ProductResultProps) {
-  await delay(2000)
-
+async function ProductResults({
+  q,
+  page,
+  collectionIds,
+  priceMin,
+  priceMax,
+  sort,
+}: ProductResultProps) {
   const pageSize = 8
 
   const products = await queryProducts(getWixServerClient(), {
@@ -56,6 +76,9 @@ async function ProductResults({ q, page, collectionIds }: ProductResultProps) {
     limit: pageSize,
     skip: (page - 1) * pageSize,
     collectionIds,
+    priceMin,
+    priceMax,
+    sort,
   })
 
   if (page > (products.totalPages || 1)) notFound()
