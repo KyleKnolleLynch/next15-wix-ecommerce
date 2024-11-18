@@ -9,6 +9,8 @@ import { getLoggedInMember } from '@/wix-api/members'
 import { getCollections } from '@/wix-api/collections'
 import MainNavigation from './main-navigation'
 import SearchField from '@/components/search-field'
+import MobileMenu from './mobile-menu'
+import { Suspense } from 'react'
 
 export default async function Navbar() {
   const wixClient = getWixServerClient()
@@ -24,6 +26,12 @@ export default async function Navbar() {
   return (
     <header className='bg-background shadow-sm'>
       <div className='mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-2'>
+        <Suspense>
+          <MobileMenu
+            collections={collections}
+            loggedInMember={loggedInMember}
+          />
+        </Suspense>
         <div className='flex flex-wrap items-center gap-5'>
           <Link href='/' className='flex items-center gap-4'>
             <Image
@@ -34,11 +42,17 @@ export default async function Navbar() {
             />
             <span className='text-xl font-bold'>Modern Wearables</span>
           </Link>
-          <MainNavigation collections={collections} />
+          <MainNavigation
+            collections={collections}
+            className='hidden lg:flex'
+          />
         </div>
-        <SearchField className='max-w-96' />
+        <SearchField className='hidden max-w-96 lg:inline' />
         <div className='flex items-center justify-center gap-5'>
-          <UserButton loggedInMember={loggedInMember} />
+          <UserButton
+            loggedInMember={loggedInMember}
+            className='hidden lg:inline-flex'
+          />
           <ShoppingCartButton initialData={cart} />
         </div>
       </div>
