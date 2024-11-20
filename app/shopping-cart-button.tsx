@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/sheet'
 import Link from 'next/link'
 import WixImage from '@/components/wix-image'
+import CheckoutButton from '@/components/checkout-button'
 
 interface ShoppingCartButtonProps {
   initialData: currentCart.Cart | null
@@ -98,12 +99,10 @@ export default function ShoppingCartButton({
                 Shipping and taxes calculated at checkout
               </p>
             </div>
-            <Button
+            <CheckoutButton
               size='lg'
               disabled={!totalCartQuantity || cartQuery.isFetching}
-            >
-              Checkout
-            </Button>
+            />
           </div>
         </SheetContent>
       </Sheet>

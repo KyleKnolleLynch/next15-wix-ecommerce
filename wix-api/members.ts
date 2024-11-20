@@ -13,3 +13,4 @@ export const getLoggedInMember = cache(
     return memberData.member || null
   },
 )
+
