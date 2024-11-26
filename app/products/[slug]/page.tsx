@@ -1,12 +1,18 @@
-import { getProductBySlug, getRelatedProducts } from '@/wix-api/products'
+import { Suspense } from 'react'
+import { products } from '@wix/stores'
 import { notFound } from 'next/navigation'
+import { getProductBySlug, getRelatedProducts } from '@/wix-api/products'
 import ProductDetails from './product-details'
 import { Metadata } from 'next'
 import { delay } from '@/lib/utils'
 import { getWixServerClient } from '@/lib/wix-client.server'
-import { Suspense } from 'react'
 import Product from '@/components/product'
 import { Skeleton } from '@/components/ui/skeleton'
+import { getLoggedInMember } from '@/wix-api/members'
+import CreateProductReviewButton from '@/components/reviews/create-product-review-button'
+import ProductReviews, {
+  ProductReviewsLoadingSkeleton,
+} from './product-reviews'
 
 interface PageProps {
   params: { slug: string }
@@ -52,6 +58,13 @@ export default async function ProductPage({ params: { slug } }: PageProps) {
       <Suspense fallback={<RelatedProductsLoadingSkeleton />}>
         <RelatedProducts productId={product._id} />
       </Suspense>
+      <hr />
+      <div className='space-y-5'>
+        <h2 className='text-2xl font-bold'>Buyer reviews</h2>
+        <Suspense fallback={<ProductReviewsLoadingSkeleton />}>
+          <ProductReviewsSection product={product} />
+        </Suspense>
+      </div>
     </main>
   )
 }
@@ -88,6 +101,28 @@ function RelatedProductsLoadingSkeleton() {
       {Array.from({ length: 4 }).map((_, i) => (
         <Skeleton key={i} className='h-96 w-full' />
       ))}
+    </div>
+  )
+}
+
+interface ProductReviewsSectionProps {
+  product: products.Product
+}
+
+async function ProductReviewsSection({ product }: ProductReviewsSectionProps) {
+  const wixClient = getWixServerClient()
+
+  const loggedInMember = await getLoggedInMember(wixClient)
+
+  await delay(5000)
+
+  return (
+    <div className='space-y-5'>
+      <CreateProductReviewButton
+        product={product}
+        loggedInMember={loggedInMember}
+      />
+      <ProductReviews product={product} />
     </div>
   )
 }
