@@ -24,6 +24,7 @@ import {
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import LoadingButton from '../loading-button'
+import StarRatingInput from './star-rating-input'
 
 const formSchema = z.object({
   title: z
@@ -108,6 +109,22 @@ export default function CreateProductReviewDialog({
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+              <FormField
+                control={form.control}
+                name='rating'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rating</FormLabel>
+                    <FormControl>
+                      <StarRatingInput
+                        value={field.value}
+                        onChange={field.onChange} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name='title'

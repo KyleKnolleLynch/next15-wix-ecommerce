@@ -1,8 +1,10 @@
 import { cache } from 'react'
 import { cookies } from 'next/headers'
+import { ApiKeyStrategy, createClient, Tokens } from '@wix/sdk'
+import { files } from '@wix/media'
 import { getWixClient } from './wix-client.base'
 import { WIX_SESSION_COOKIE } from './constants'
-import { Tokens } from '@wix/sdk'
+import { env } from '@/env'
 
 export const getWixServerClient = cache(() => {
   let tokens: Tokens | undefined
@@ -13,3 +15,17 @@ export const getWixServerClient = cache(() => {
 
   return getWixClient(tokens)
 })
+
+export const getWixAdminClient = cache(() => {
+  const wixClient = createClient({
+    modules: {
+      files,
+    },
+    auth: ApiKeyStrategy({
+      apiKey: env.WIX_API_KEY,
+      siteId: env.NEXT_PUBLIC_WIX_SITE_ID,
+    }),
+  })
+  return wixClient
+})
+
