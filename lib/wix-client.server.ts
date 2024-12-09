@@ -28,4 +28,3 @@ export const getWixAdminClient = cache(() => {
   })
   return wixClient
 })
-

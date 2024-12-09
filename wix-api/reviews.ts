@@ -6,11 +6,12 @@ export interface CreateProductReviewValue {
   title: string
   body: string
   rating: number
+  media: { url: string; type: 'image' | 'video' }[]
 }
 
 export async function createProductReview(
   wixClient: WixClient,
-  { productId, title, body, rating }: CreateProductReviewValue,
+  { productId, title, body, rating, media }: CreateProductReviewValue,
 ) {
   const member = await getLoggedInMember(wixClient)
 
@@ -37,6 +38,9 @@ export async function createProductReview(
       title,
       body,
       rating,
+      media: media.map(({ url, type }) =>
+        type === 'image' ? { image: url } : { video: url },
+      ),
     },
   })
 }
