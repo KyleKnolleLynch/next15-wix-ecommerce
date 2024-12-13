@@ -1,7 +1,9 @@
 import { products } from '@wix/stores'
+import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { CircleAlert, ImageUp, Loader2, X } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -25,8 +27,6 @@ import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import LoadingButton from '../loading-button'
 import StarRatingInput from './star-rating-input'
-import { useRef } from 'react'
-import { CircleAlert, ImageUp, Loader2, X } from 'lucide-react'
 import { Button } from '../ui/button'
 import useMediaUpload, { MediaAttachment } from './useMediaUpload'
 import { cn } from '@/lib/utils'
@@ -186,13 +186,17 @@ export default function CreateProductReviewDialog({
                   />
                 ))}
                 <AddMediaButton
-                  onFileSelected={startUpload => {}}
+                  onFileSelected={startUpload}
                   disabled={
                     attachments.filter(a => a.state !== 'failed').length >= 5
                   }
                 />
               </div>
-              <LoadingButton type='submit' loading={mutation.isPending}>
+              <LoadingButton
+                type='submit'
+                loading={mutation.isPending}
+                disabled={uploadInProgress}
+              >
                 Submit
               </LoadingButton>
             </form>
@@ -253,7 +257,7 @@ function AttachmentPreview({
     <div
       className={cn(
         'relative size-fit',
-        state === 'failed' && 'outline-destructive',
+        state === 'failed' && 'outline outline-1 outline-destructive',
       )}
     >
       {file.type.startsWith('image') ? (

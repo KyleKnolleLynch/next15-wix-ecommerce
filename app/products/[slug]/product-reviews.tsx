@@ -5,12 +5,15 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { reviews } from '@wix/reviews'
 import { products } from '@wix/stores'
 import { CornerDownRight, StarIcon } from 'lucide-react'
+import Zoom from 'react-medium-image-zoom'
+import { media as wixMedia } from '@wix/sdk'
 import LoadingButton from '@/components/loading-button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { wixBrowserClient } from '@/lib/wix.client.browser'
 import { getProductReviews } from '@/wix-api/reviews'
 import logo from '@/assets/logo.png'
+import WixImage from '@/components/wix-image'
 
 interface ProductReviewsProps {
   product: products.Product
@@ -105,6 +108,13 @@ function Review({
         {content?.body && (
           <div className='whitespace-pre-line'>{content.body}</div>
         )}
+        {!!content?.media?.length && (
+          <div className='flex flex-wrap gap-2'>
+            {content.media.map(media => (
+              <MediaAttachment key={media.image || media.video} media={media} />
+            ))}
+          </div>
+        )}
       </div>
       {reply?.message && (
         <div className='ms-10 mt-2.5 space-y-1 border-t pt-2.5'>
@@ -138,4 +148,33 @@ export function ProductReviewsLoadingSkeleton() {
       ))}
     </div>
   )
+}
+
+interface MediaAttachmentProps {
+  media: reviews.Media
+}
+
+function MediaAttachment({ media }: MediaAttachmentProps) {
+  if (media.image) {
+    return (
+      <Zoom>
+        <WixImage
+          mediaIdentifier={media.image}
+          alt='Review media'
+          scaleToFill={false}
+          className='max-h-40 max-w-40 object-contain'
+        />
+      </Zoom>
+    )
+  }
+
+  if (media.video) {
+    return (
+      <video controls className='max-h-40 max-w-40'>
+        <source src={wixMedia.getVideoUrl(media.video).url} type='video/mp4' />
+      </video>
+    )
+  }
+
+  return <span className='text-destructive'>Unsupported media format</span>
 }
