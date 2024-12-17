@@ -57,8 +57,6 @@ interface ProductsProps {
 }
 
 async function Products({ collectionId, page }: ProductsProps) {
-  await delay(3000)
-
   const pageSize = 8
 
   const collectionProducts = await queryProducts(getWixServerClient(), {

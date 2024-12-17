@@ -47,7 +47,6 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({ params: { slug } }: PageProps) {
-  await delay(2000)
   const product = await getProductBySlug(getWixServerClient(), slug)
 
   if (!product?._id) notFound()
@@ -75,8 +74,6 @@ interface RelatedProductsProps {
 }
 
 async function RelatedProducts({ productId }: RelatedProductsProps) {
-  await delay(2000)
-
   const relatedProducts = await getRelatedProducts(
     getWixServerClient(),
     productId,
@@ -124,8 +121,6 @@ async function ProductReviewsSection({ product }: ProductReviewsSectionProps) {
       })
     ).items[0]
     : null
-
-  await delay(5000)
 
   return (
     <div className='space-y-5'>
