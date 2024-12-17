@@ -178,3 +178,4 @@ function MediaAttachment({ media }: MediaAttachmentProps) {
 
   return <span className='text-destructive'>Unsupported media format</span>
 }
+

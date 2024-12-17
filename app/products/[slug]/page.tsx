@@ -13,6 +13,7 @@ import CreateProductReviewButton from '@/components/reviews/create-product-revie
 import ProductReviews, {
   ProductReviewsLoadingSkeleton,
 } from './product-reviews'
+import { getProductReviews } from '@/wix-api/reviews'
 
 interface PageProps {
   params: { slug: string }
@@ -110,9 +111,19 @@ interface ProductReviewsSectionProps {
 }
 
 async function ProductReviewsSection({ product }: ProductReviewsSectionProps) {
+  if (!product._id) return null
+
   const wixClient = getWixServerClient()
 
   const loggedInMember = await getLoggedInMember(wixClient)
+
+  const existingReview = loggedInMember?.contactId
+    ? (await getProductReviews(wixClient, {
+        contactId: loggedInMember.contactId,
+        productId: product._id,
+      })
+    ).items[0]
+    : null
 
   await delay(5000)
 
@@ -121,6 +132,7 @@ async function ProductReviewsSection({ product }: ProductReviewsSectionProps) {
       <CreateProductReviewButton
         product={product}
         loggedInMember={loggedInMember}
+        hasExistingReview={!!existingReview}
       />
       <ProductReviews product={product} />
     </div>

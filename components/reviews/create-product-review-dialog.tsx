@@ -30,6 +30,7 @@ import StarRatingInput from './star-rating-input'
 import { Button } from '../ui/button'
 import useMediaUpload, { MediaAttachment } from './useMediaUpload'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   title: z
@@ -76,6 +77,8 @@ export default function CreateProductReviewDialog({
   const { attachments, startUpload, removeAttachment, clearAttachments } =
     useMediaUpload()
 
+  const router = useRouter()
+
   async function onSubmit({ title, body, rating }: FormValues) {
     if (!product._id) {
       throw Error('Product ID is missing')
@@ -99,6 +102,9 @@ export default function CreateProductReviewDialog({
           form.reset()
           clearAttachments()
           onSubmitted()
+          setTimeout(() => {
+            router.refresh()
+          }, 2000)
         },
       },
     )

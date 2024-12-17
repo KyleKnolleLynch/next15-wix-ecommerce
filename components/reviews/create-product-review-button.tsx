@@ -17,11 +17,13 @@ import {
 interface CreateProductReviewButtonProps {
   product: products.Product
   loggedInMember: members.Member | null
+  hasExistingReview: boolean
 }
 
 export default function CreateProductReviewButton({
   product,
   loggedInMember,
+  hasExistingReview,
 }: CreateProductReviewButtonProps) {
   const [showReviewDialog, setShowReviewDialog] = useState(false)
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
@@ -36,7 +38,7 @@ export default function CreateProductReviewButton({
       </Button>
       <CreateProductReviewDialog
         product={product}
-        open={showReviewDialog}
+        open={showReviewDialog && !hasExistingReview}
         onOpenChange={setShowReviewDialog}
         onSubmitted={() => {
           setShowReviewDialog(false)
@@ -46,6 +48,10 @@ export default function CreateProductReviewButton({
       <ReviewSubmittedDialog
         open={showConfirmationDialog}
         onOpenChange={setShowConfirmationDialog}
+      />
+      <ReviewAlreadyExistsDialog
+        open={showReviewDialog && hasExistingReview}
+        onOpenChange={setShowReviewDialog}
       />
     </>
   )
@@ -68,6 +74,33 @@ function ReviewSubmittedDialog({
           <DialogDescription>
             Your review has been submitted successfully. It will post publicly
             upon approval by our team.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button onClick={() => onOpenChange(false)}>Close</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+interface ReviewAlreadyExistsDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+function ReviewAlreadyExistsDialog({
+  open,
+  onOpenChange,
+}: ReviewAlreadyExistsDialogProps) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Review already exists</DialogTitle>
+          <DialogDescription>
+            You have already submitted a review for this product. Only one
+            review per product is permitted.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
