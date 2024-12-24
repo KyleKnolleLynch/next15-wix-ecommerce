@@ -60,7 +60,7 @@ async function FeaturedProducts() {
   return (
     <section className='space-y-5'>
       <h2 className='text-2xl font-bold'>Featured Products</h2>
-      <div className='grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+      <div className='grid gap-4 motion-translate-y-in-25 motion-blur-in-md motion-opacity-in-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {featuredProducts.items.map(product => (
           <Product key={product._id} product={product} />
         ))}
