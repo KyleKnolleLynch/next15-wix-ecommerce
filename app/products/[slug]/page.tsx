@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import { getProductBySlug, getRelatedProducts } from '@/wix-api/products'
 import ProductDetails from './product-details'
 import { Metadata } from 'next'
-import { delay } from '@/lib/utils'
 import { getWixServerClient } from '@/lib/wix-client.server'
 import Product from '@/components/product'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -30,7 +29,7 @@ export async function generateMetadata({
 
   return {
     title: product.name,
-    description: 'Buy this item on Modern Wearables',
+    description: 'Buy this item on Modern Aquarist',
     openGraph: {
       images: mainImage?.url
         ? [

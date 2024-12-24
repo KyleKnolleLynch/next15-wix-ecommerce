@@ -15,8 +15,8 @@ const notoSansDisplay = localFont({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Modern Wearables',
-    absolute: 'Modern Wearables',
+    template: '%s | Modern Aquarist',
+    absolute: 'Modern Aquarist',
   },
   description: 'Ecommerce application built with Next.js',
 }

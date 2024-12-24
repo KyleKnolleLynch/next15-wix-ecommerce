@@ -36,11 +36,11 @@ export default async function Navbar() {
           <Link href='/' className='flex items-center gap-4'>
             <Image
               src={Logo}
-              alt='Modern Wearables logo'
+              alt='Modern Aquarist logo'
               width={40}
               height={40}
             />
-            <span className='text-xl font-bold'>Modern Wearables</span>
+            <span className='text-xl font-bold'>Modern Aquarist</span>
           </Link>
           <MainNavigation
             collections={collections}
