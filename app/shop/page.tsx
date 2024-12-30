@@ -89,7 +89,7 @@ async function ProductResults({
         {products.totalCount} product{products.totalCount === 1 ? '' : 's'}{' '}
         found
       </p>
-      <div className='grid gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
+      <div className='grid gap-5 motion-translate-y-in-25 motion-blur-in-md motion-opacity-in-0 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
         {products.items.map(product => (
           <Product key={product._id} product={product} />
         ))}
